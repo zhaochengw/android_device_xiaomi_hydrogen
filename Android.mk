@@ -25,13 +25,10 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),hydrogen)
-
+ifneq ($(filter hydrogen,$(TARGET_DEVICE)),)
 include $(call all-makefiles-under,$(LOCAL_PATH))
 
 include $(CLEAR_VARS)
-
-include device/xiaomi/hydrogen/kernel/AndroidKernel.mk
 
 ADSP_IMAGES := \
     adsp.b00 adsp.b01 adsp.b02 adsp.b03 adsp.b04 adsp.b05 adsp.b06 adsp.b07 \
@@ -264,8 +261,8 @@ ALL_DEFAULT_INSTALLED_MODULES += $(IMS_SYMLINKS)
 
 # Create a link for the WCNSS config file, which ends up as a writable
 # version in /data/misc/wifi
-$(shell mkdir -p $(TARGET_OUT)/lib/modules; \
-    ln -sf /system/lib/modules/pronto/pronto_wlan.ko \
-        $(TARGET_OUT)/lib/modules/wlan.ko)
+$(shell mkdir -p $(TARGET_OUT)/etc/firmware/wlan/prima; \
+    ln -sf /data/misc/wifi/WCNSS_qcom_cfg.ini \
+	    $(TARGET_OUT)/etc/firmware/wlan/prima/WCNSS_qcom_cfg.ini)
 
 endif

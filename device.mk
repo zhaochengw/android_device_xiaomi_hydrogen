@@ -28,6 +28,7 @@ PRODUCT_AAPT_CONFIG := normal
 PRODUCT_AAPT_PREF_CONFIG := xxhdpi
 
 # Boot animation
+TARGET_BOOTANIMATION_HALF_RES := true
 TARGET_SCREEN_HEIGHT := 1920
 TARGET_SCREEN_WIDTH := 1080
 
@@ -106,10 +107,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     Gello
 
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
-
 # Connectivity Engine support (CNE)
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
@@ -164,13 +161,6 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     ueventd.qcom.rc
 
-# sbin
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/rootdir/etc/sbin/qcrypto_module.hmac:root/sbin/qcrypto_module.hmac \
-    $(LOCAL_PATH)/rootdir/etc/sbin/qcrypto_module.ko:root/sbin/qcrypto_module.ko \
-    $(LOCAL_PATH)/rootdir/etc/sbin/qdrbg_module.hmac:root/sbin/qdrbg_module.hmac \
-    $(LOCAL_PATH)/rootdir/etc/sbin/qdrbg_module.ko:root/sbin/qdrbg_module.ko \
-
 # Qcom scripts
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/etc/hcidump.sh:system/etc/hcidump.sh \
@@ -209,7 +199,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/keylayout/atmel-maxtouch.kl:system/usr/keylayout/atmel-maxtouch.kl \
     $(LOCAL_PATH)/keylayout/ft5x06_ts.kl:system/usr/keylayout/ft5x06_ts.kl \
     $(LOCAL_PATH)/keylayout/ft5x46.kl:system/usr/keylayout/ft5x46.kl \
-    $(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
+    $(LOCAL_PATH)/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl \
+    $(LOCAL_PATH)/keylayout/msm8976-tashalite-snd-card_Button_Jack.kl:system/usr/keylayout/msm8976-tashalite-snd-card_Button_Jack.kl
 
 # Keymaster
 PRODUCT_PACKAGES += \
