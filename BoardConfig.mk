@@ -97,7 +97,7 @@ TARGET_TS_MAKEUP := true
 # Charger
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
-# CMHW
+# MKHW
 TARGET_TAP_TO_WAKE_NODE := "/sys/bus/i2c/devices/4-0038/wakeup_mode"
 
 # CNE
