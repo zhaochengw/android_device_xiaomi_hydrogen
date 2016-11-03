@@ -51,6 +51,12 @@ failed ()
   exit $2
 }
 
+program_bdaddr ()
+{
+  /system/bin/btnvtool -O
+  logi "Bluetooth Address programmed successfully"
+}
+
 #
 # enable bluetooth profiles dynamically
 #
@@ -108,7 +114,22 @@ config_bt ()
         esac
         ;;
     "msm")
-#unused property is removed by xiaomi.
+        setprop ro.qualcomm.bluetooth.opp true
+        setprop ro.qualcomm.bluetooth.hfp true
+        setprop ro.qualcomm.bluetooth.hsp true
+        setprop ro.qualcomm.bluetooth.pbap true
+        setprop ro.qualcomm.bluetooth.ftp true
+        setprop ro.qualcomm.bluetooth.nap true
+        setprop ro.bluetooth.sap true
+        setprop ro.bluetooth.dun true
+        case $btsoc in
+          "ath3k")
+              setprop ro.qualcomm.bluetooth.map false
+              ;;
+          *)
+              setprop ro.qualcomm.bluetooth.map true
+              ;;
+        esac
         ;;
     *)
         setprop ro.qualcomm.bluetooth.opp true

@@ -20,6 +20,18 @@ persist.radio.multisim.config=dsds
 DEVICE_PROVISIONED=1
 ro.telephony.default_cdma_sub=0
 ro.telephony.default_network=22,22
+telephony.lteOnCdmaDevice=1,1
+persist.dbg.volte_avail_ovr=1
+persist.dbg.vt_avail_ovr=1
+persist.radio.VT_HYBRID_ENABLE=1
+persist.radio.NO_STAPA=1
+persist.radio.rat_on=combine
+persist.cellbroadcast.enabled=false
+persist.radio.lw_enabled=true
+persist.radio.ignore_dom_time=5
+persist.radio.sib16_support=1
+persist.radio.apm_sim_not_pwdn=1
+persist.radio.custom_ecc=1
 persist.sys.ssr.restart_level=ALL_ENABLE
 persist.sys.ssr.enable_ramdumps=1
 persist.data.qmi.adb_logmask=0
@@ -54,7 +66,7 @@ persist.cne.feature=1
 #
 # system props for the dpm module
 #
-persist.dpm.feature=5
+persist.dpm.feature=1
 persist.dpm.nsrm.bkg.evt=3955
 
 mm.enable.smoothstreaming=true
@@ -71,7 +83,7 @@ vidc.enc.dcvs.extra-buff-count=2
 #Audio voice concurrency related flags
 voice.playback.conc.disabled=true
 voice.record.conc.disabled=false
-voice.voip.conc.disabled=true
+voice.voip.conc.disabled=false
 #Decides the audio fallback path during voice call, deep-buffer and fast are the two allowed fallback paths now.
 voice.conc.fallbackpath=deep-buffer
 
@@ -106,10 +118,6 @@ ro.qcom.ad.sensortype=2
 # bit0-ColorPrefer bit1-EyeCare bit2-AD bit3-CE bit4-CABC bit5-SRGB
 ro.sys.display.support=63
 
-#
-# System props for telephony
-# System prop to turn on CdmaLTEPhone always
-telephony.lteOnCdmaDevice=1
 
 #
 # System props for bluetooh
@@ -226,6 +234,9 @@ camera.hal1.packagelist=com.skype.raider,com.google.android.talk
 camera.display.umax=1920x1080
 camera.display.lmax=1280x720
 
+#In video expect camera time source as monotonic
+media.camera.ts.monotonic=1
+
 #low power mode for camera
 camera.lowpower.record.enable=1
 
@@ -236,26 +247,14 @@ sched.colocate.enable=1
 persist.sys.button_jack_profile=volume
 persist.sys.button_jack_switch=0
 
-#Enable for IMS feature
-persist.dbg.volte_avail_ovr=1
-persist.dbg.vt_avail_ovr=1
-persist.radio.VT_HYBRID_ENABLE=1
 
-#For RIJL netwrok video call
-persist.radio.NO_STAPA=1
 
-# Enable manual network selection function and distinguish 2G/3G/4G
-persist.radio.rat_on=combine
 
 # LCD density
 
-#enable cellbroadcast switch
-persist.cellbroadcast.enabled=false
-persist.radio.lw_enabled=true
+
 
 ro.vendor.extension_library=libqti-perfd-client.so
-persist.radio.sib16_support=1
-persist.radio.custom_ecc=1
 ro.frp.pst=/dev/block/bootdevice/by-name/config
 ro.btconfig.if=smd
 ro.btconfig.dev=/dev/smd3
@@ -269,6 +268,6 @@ ro.gps.agps_provider=1
 ro.com.android.mobiledata=true
 keyguard.no_require_sim=true
 ro.com.android.dataroaming=true
-persist.power.useautobrightadj=true
-persist.radio.apm_sim_not_pwdn=1
+ro.product.cuptsm=XIAOMI|ESE|02|01
 ro.sf.lcd_density=480
+ro.com.google.clientidbase=android-xiaomi
