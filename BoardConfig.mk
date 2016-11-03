@@ -56,7 +56,7 @@ BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_APPEND_DTB := true
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
-TARGET_KERNEL_SOURCE := ../kernel/hydrogen
+TARGET_KERNEL_SOURCE := kernel/xiaomi/hydrogen
 TARGET_KERNEL_CONFIG := hydrogen_user_defconfig
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-linux-android-
 
@@ -98,8 +98,6 @@ TARGET_TS_MAKEUP := true
 BOARD_CHARGER_ENABLE_SUSPEND := true
 
 # CMHW
-BOARD_USES_CYANOGEN_HARDWARE := true
-BOARD_HARDWARE_CLASS += hardware/cyanogen/cmhw
 TARGET_TAP_TO_WAKE_NODE := "/sys/bus/i2c/devices/4-0038/wakeup_mode"
 
 # CNE

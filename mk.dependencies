@@ -1,0 +1,19 @@
+[
+ {
+   "repository": "android_device_qcom_common",
+   "target_path": "device/qcom/common"
+ },
+{
+   "repository": "android_kernel_xiaomi_hydrogen",
+   "target_path": "kernel/xiaomi/hydrogen"
+ },
+ {
+   "repository": "android_external_stlport",
+   "target_path": "external/stlport"
+ },
+  {
+    "repository": "android_vendor_xiaomi_hydrogen",
+    "target_path": "vendor/xiaomi/hydrogen"
+   }
+
+]
