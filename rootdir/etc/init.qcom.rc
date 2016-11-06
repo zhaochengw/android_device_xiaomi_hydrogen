@@ -312,8 +312,10 @@ on post-fs-data
     chmod 0660 /data/misc/radio/db_check_done
 
     # double tap wakeup
-    chmod 0660 /sys/bus/i2c/devices/4-0038/wakeup_mode
-    chown system system /sys/bus/i2c/devices/4-0038/wakeup_mode
+    chmod 0660 /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0038/wakeup_mode
+    chown system system /sys/devices/soc.0/78b8000.i2c/i2c-4/4-0038/wakeup_mode
+    chmod 0660 /sys/devices/soc.0/78b8000.i2c/i2c-4/4-004a/wakeup_mode
+    chown system system /sys/devices/soc.0/78b8000.i2c/i2c-4/4-004a/wakeup_mode
 
 service perfd /system/vendor/bin/perfd
     class main
@@ -843,3 +845,10 @@ service seemp_healthd /system/vendor/bin/seemp_healthd
     class late_start
     user system
     group system
+
+# DT2W
+service tp_node /system/bin/sh /system/bin/tp_node.sh
+    class main
+    user root
+    group root
+    oneshot
