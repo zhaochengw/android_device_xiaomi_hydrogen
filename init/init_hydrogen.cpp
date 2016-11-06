@@ -29,11 +29,44 @@
 
 #include <stdlib.h>
 #include <fcntl.h>
+#include <sys/sysinfo.h>
 
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
 #include "util.h"
+
+
+char const *heapstartsize;
+char const *heapgrowthlimit;
+char const *heapsize;
+char const *heapminfree;
+char const *heapmaxfree;
+char const *devicename;
+
+void check_device()
+{
+    struct sysinfo sys;
+
+    sysinfo(&sys);
+
+    if (sys.totalram > 3072ull * 1024 * 1024) {
+        // from - phone-xxhdpi-3072-dalvik-heap.mk
+        heapstartsize = "8m";
+        heapgrowthlimit = "384m";
+        heapsize = "1024m";
+        heapminfree = "4m";
+		heapmaxfree = "16m";
+		devicename = "helium";
+    } else {
+        // from - phone-xxhdpi-3072-dalvik-heap.mk
+        heapstartsize = "8m";
+        heapgrowthlimit = "288m";
+        heapsize = "768m";
+        heapminfree = "512k";
+		heapmaxfree = "8m";
+		devicename = "hydrogen";    }
+}
 
 static int read_file2(const char *fname, char *data, int max_size)
 {
@@ -119,14 +152,17 @@ void init_alarm_boot_properties()
     }
 }
 
-void vendor_load_properties() {
-    char device[PROP_VALUE_MAX];
-    char rf_version[PROP_VALUE_MAX];
-    int rc;
-
-    rc = property_get("ro.mk.device", device);
-    if (!rc || strncmp(device, "hydrogen", PROP_VALUE_MAX))
-        return;
+void vendor_load_properties()
+{
+    check_device();
+    property_set("dalvik.vm.heapstartsize", heapstartsize);
+    property_set("dalvik.vm.heapgrowthlimit", heapgrowthlimit);
+    property_set("dalvik.vm.heapsize", heapsize);
+    property_set("dalvik.vm.heaptargetutilization", "0.75");
+    property_set("dalvik.vm.heapminfree", heapminfree);
+    property_set("dalvik.vm.heapmaxfree", heapmaxfree);
+	property_set("ro.mk.device", devicename);
+	property_set("ro.product.device", devicename);
     property_set("ro.product.model", "MI MAX");
     property_set("ro.mk.maintainer", "zhaochengw");
     init_alarm_boot_properties();
