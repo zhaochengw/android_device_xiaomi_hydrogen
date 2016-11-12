@@ -51,21 +51,36 @@ void check_device()
     sysinfo(&sys);
 
     if (sys.totalram > 3072ull * 1024 * 1024) {
-        // from - phone-xxhdpi-3072-dalvik-heap.mk
+        // from - phone-xxhdpi-4096-dalvik-heap.mk
         heapstartsize = "8m";
         heapgrowthlimit = "384m";
         heapsize = "1024m";
         heapminfree = "4m";
-		heapmaxfree = "16m";
-		devicename = "helium";
+        heapmaxfree = "16m";
     } else {
         // from - phone-xxhdpi-3072-dalvik-heap.mk
         heapstartsize = "8m";
         heapgrowthlimit = "288m";
         heapsize = "768m";
         heapminfree = "512k";
-		heapmaxfree = "8m";
-		devicename = "hydrogen";    }
+        heapmaxfree = "8m";
+    }
+		
+    char const *soc_file = "/sys/devices/soc0/soc_id";
+    char buf[64];
+
+    if(read_file2(soc_file, buf, sizeof(buf))) {
+    /*
+     * Setup devicename based on soc_id:
+     * for hydrogen soc_id = 266
+     * for helium soc_id = 278
+     */
+        if (buf[0] == '266') {
+           devicename = "hydrogen";
+        }else if (buf[0] == '278') {
+           devicename = "helium";
+        }
+    }
 }
 
 static int read_file2(const char *fname, char *data, int max_size)
