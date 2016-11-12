@@ -1,5 +1,5 @@
 /*
-   Copyright (c) 2016, The CyanogenMod Project
+   Copyright (c) 2015, The Linux Foundation. All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
@@ -28,12 +28,19 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <fcntl.h>
 
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
 #include "util.h"
+
+#define ISMATCH(a,b)    (!strncmp(a,b,PROP_VALUE_MAX))
+
+#define SOC_ID_PATH     "/sys/devices/soc0/soc_id"
+#define BUF_SIZE         64
+static char tmp[BUF_SIZE];
 
 static int read_file2(const char *fname, char *data, int max_size)
 {
@@ -61,8 +68,7 @@ static int read_file2(const char *fname, char *data, int max_size)
 void init_alarm_boot_properties()
 {
     char const *alarm_file = "/proc/sys/kernel/boot_reason";
-    char buf[64];
-
+    char buf[BUF_SIZE];
     if(read_file2(alarm_file, buf, sizeof(buf))) {
 
     /*
@@ -80,55 +86,45 @@ void init_alarm_boot_properties()
      * 7 -> CBLPWR_N pin toggled (for external power supply)
      * 8 -> KPDPWR_N pin toggled (power key pressed)
      */
-  if (buf[0] == '0') {
-        property_set("ro.boot.bootreason", "invalid");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '1') {
-        property_set("ro.boot.bootreason", "hard_reset");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '2') {
-        property_set("ro.boot.bootreason", "smpl");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '3'){
-        property_set("ro.alarm_boot", "true");
-    }
-  else if (buf[0] == '4') {
-        property_set("ro.boot.bootreason", "dc_chg");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '5') {
-        property_set("ro.boot.bootreason", "usb_chg");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '6') {
-        property_set("ro.boot.bootreason", "pon1");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '7') {
-        property_set("ro.boot.bootreason", "cblpwr");
-        property_set("ro.alarm_boot", "false");
-    }
-  else if (buf[0] == '8') {
-        property_set("ro.boot.bootreason", "kpdpwr");
-        property_set("ro.alarm_boot", "false");
-    }
-
+        if(buf[0] == '3')
+            property_set("ro.alarm_boot", "true");
+        else
+            property_set("ro.alarm_boot", "false");
     }
 }
 
-void vendor_load_properties() {
-    char device[PROP_VALUE_MAX];
-    char rf_version[PROP_VALUE_MAX];
-    int rc;
 
-    rc = property_get("ro.mk.device", device);
-    if (!rc || strncmp(device, "hydrogen", PROP_VALUE_MAX))
-        return;
-    property_set("ro.product.model", "MI MAX");
-    property_set("ro.mk.maintainer", "zhaochengw");
+void vendor_load_properties()
+{
+    int rc;
+    unsigned long soc_id = -1;
+
+    /* get soc ID */
+    rc = read_file2(SOC_ID_PATH, tmp, sizeof(tmp));
+    if (rc) {
+        soc_id = strtoul(tmp, NULL, 0);
+    }
+
+    switch (soc_id) {
+        case 266:
+    property_set("dalvik.vm.heapstartsize", "8m");
+    property_set("dalvik.vm.heapgrowthlimit", "288m");
+    property_set("dalvik.vm.heapsize", "768");
+    property_set("dalvik.vm.heaptargetutilization", "0.75");
+    property_set("dalvik.vm.heapminfree", "512k");
+    property_set("dalvik.vm.heapmaxfree", "8m");
+    property_set("ro.product.device", "hydrogen");
+            break;
+        case 278:
+    property_set("dalvik.vm.heapstartsize", "8m");
+    property_set("dalvik.vm.heapgrowthlimit", "384m");
+    property_set("dalvik.vm.heapsize", "1024");
+    property_set("dalvik.vm.heaptargetutilization", "0.75");
+    property_set("dalvik.vm.heapminfree", "4m");
+    property_set("dalvik.vm.heapmaxfree", "16");
+    property_set("ro.product.device", "helium");
+            break;
+    }
+
     init_alarm_boot_properties();
 }
-
